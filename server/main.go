@@ -14,6 +14,8 @@ type GreeterServer struct {
 }
 
 func (s GreeterServer) SayHello(ctx context.Context, in *greeter.HelloRequest) (*greeter.HelloReply, error) {
+	log.Println("client message is ", in.Name)
+
 	return &greeter.HelloReply{
 		Name: string("Hello ") + in.Name,
 	}, nil
