@@ -2,12 +2,18 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
-	"time"
 
 	"github.com/AllanM007/grpc-services/greeter"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+)
+
+var defaultName string = "Tata"
+
+var (
+	name = flag.String("name", defaultName, "Name to greet")
 )
 
 type GreeterClient struct {
@@ -16,6 +22,8 @@ type GreeterClient struct {
 
 func main() {
 
+	flag.Parse()
+
 	clientConn, err := grpc.NewClient(":8089", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("failed to connect: %v", err)
@@ -23,15 +31,12 @@ func main() {
 
 	defer clientConn.Close()
 
-	c := greeter.NewGreeterClient(clientConn)
+	client := greeter.NewGreeterClient(clientConn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	req, err := c.SayHello(ctx, &greeter.HelloRequest{Name: "Ola"})
+	response, err := client.SayHello(context.Background(), &greeter.HelloRequest{Name: *name})
 	if err != nil {
 		log.Fatalf("couln't send greeting: %v", err)
 	}
 
-	log.Printf("Got message: %s", req.GetName())
+	log.Printf("Got message: %s", response.GetName())
 }
