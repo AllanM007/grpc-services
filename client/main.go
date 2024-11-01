@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var defaultName string = "Tata"
+const defaultName string = "Tata"
 
 var (
 	name = flag.String("name", defaultName, "Name to greet")

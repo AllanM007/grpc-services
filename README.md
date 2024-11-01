@@ -1,2 +1,2 @@
 ### Greeter gRPC Services 
-- This is a super simple client server gRPC implementation of the Greeter service
+- Super simple client server gRPC implementation of a Greeter service
